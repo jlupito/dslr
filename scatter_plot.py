@@ -21,8 +21,11 @@ def get_data_by_house(houses, col, df):
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Process a CSV file.")
+    #try "Astronomy" and "Defense Against the Dark Arts"
+    parser = argparse.ArgumentParser(description="Process a CSV file and choose 2 courses.")
     parser.add_argument('path', type=str, help='Path to the CSV file')
+    parser.add_argument('course1', type=str, help='Course1')
+    parser.add_argument('course2', type=str, help='Course2')
     args = parser.parse_args()
 
     try:
@@ -33,13 +36,29 @@ def main():
             houses = df['Hogwarts House'].unique()
         else:
             raise ValueError("Houses have not been attributed yet.")
+
+        if args.course1 not in df.columns or args.course2 not in df.columns:
+            raise ValueError(f"One or both courses do not exist.")
         
-        numeric_col = get_numeric_col(df)
+        course1 = get_data_by_house(houses, df[args.course1], df)
+        course2 = get_data_by_house(houses, df[args.course2], df)
+
+        plt.figure(figsize=(10, 6))
+        for house, color in zip(houses, bar_colors):
+                ax.hist(bar_values[house], bins=20, alpha=0.5, label=house, color=color)  
+        plt.scatter(course1, course2, alpha=0.5, marker='o', color='b')
+        title = "Distribution for " + args.course1 + " and " + course2
+        plt.title(title)
+        plt.xlabel('Gross domestic product')
+        plt.ylabel('Life Expectancy')
+        plt.show()
+
+        values = get_data_by_house(houses, col, df)
         fig, axes = plt.subplots(5, 3, figsize=(10, 5 * 5))
         bar_colors = ['#00008B', '#006400', '#8B0000', '#B8860B']    
 
         for ax, col in zip(axes.flat, numeric_col):
-            bar_values = get_data_by_house(houses, col, df)
+            values = get_data_by_house(houses, col, df)
 
             for house, color in zip(houses, bar_colors):
                 ax.hist(bar_values[house], bins=20, alpha=0.5, label=house, color=color)         

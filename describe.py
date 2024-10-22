@@ -51,7 +51,6 @@ def main():
             return
         
         numeric_df = extract_numeric(df)
-    
         print(numeric_df)
 
     except KeyboardInterrupt:
