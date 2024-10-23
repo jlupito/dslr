@@ -53,7 +53,7 @@ def main():
             fig.delaxes(ax)
         legend_handles = [Patch(color=color, label=house) for color, house in zip(bar_colors, houses)]
         fig.legend(handles=legend_handles, loc='lower right', fontsize=10, bbox_to_anchor=(0.9, 0.10))
-        fig.suptitle('Score distribution by House for Each Subject', fontsize=12)
+        fig.suptitle('Score distribution by House for each subject', fontsize=12, fontweight='bold', y=0.96)
 
         plt.subplots_adjust(hspace=0.5, wspace=0.5)
         plt.show()
