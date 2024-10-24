@@ -3,6 +3,13 @@ import numpy as np
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+def initialisation(X):
+  W = np.random.randn(X.shape[1], 1)
+  b = np.random.randn(1)
+  return (W, b)
+
+
+
 def forward_propagation(X, W, b):
     Z = X.dot(W) + b
     A = sigmoid(Z)

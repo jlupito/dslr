@@ -1,4 +1,4 @@
-from load_csv import load
+from utils.load_csv import load
 import matplotlib.pyplot as plt
 from pandas.api.types import is_numeric_dtype
 import seaborn as sns
@@ -8,7 +8,7 @@ import argparse
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Process a CSV file and choose 2 courses.")
+    parser = argparse.ArgumentParser(description="Process a CSV file.")
     parser.add_argument('path', type=str, help='Path to the CSV file')
     args = parser.parse_args()
 

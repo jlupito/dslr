@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from load_csv import load
+from utils.load_csv import load
 from pandas.api.types import is_numeric_dtype
-from utils_stats import calculate
+from utils.utils_stats import calculate
 import argparse
 
 

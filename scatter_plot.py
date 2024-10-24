@@ -1,4 +1,4 @@
-from load_csv import load
+from utils.load_csv import load
 import matplotlib.pyplot as plt
 import argparse
 
