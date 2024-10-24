@@ -8,8 +8,6 @@ def initialisation(X):
   b = np.random.randn(1)
   return (W, b)
 
-
-
 def forward_propagation(X, W, b):
     Z = X.dot(W) + b
     A = sigmoid(Z)
@@ -28,3 +26,4 @@ def optimisation(X, W, b, A, y, learning_rate):
     W = W - learning_rate * dW
     b = b - learning_rate * db
     return (W, b)
+
