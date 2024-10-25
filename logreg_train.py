@@ -2,13 +2,22 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import json, argparse
+from sklearn.preprocessing import LabelBinarizer
 from utils.load_csv import load
-from utils.utils_logistic import sigmoid, log_loss, gradients, initialisation, forward_propagation
+from utils.utils_logistic import log_loss, optimisation, initialisation, forward_propagation
 
 def predict(X, W, b):
     A = forward_propagation(X, W, b)
     return A >= 0.5
-     
+
+def train(X, y, n_iter, learning_rate):
+    W, b = initialisation(X)
+    loss_history = []
+    for i in range(n_iter):
+        A = forward_propagation(X, W, b)
+        loss_history.append(log_loss(y, A))
+        W, b = optimisation(X, W, b, A, y, learning_rate)
+    return W, b, loss_history
 
 def visualisation(X, y, W, b):
     resolution = 300
@@ -34,74 +43,58 @@ def visualisation(X, y, W, b):
     ax.pcolormesh(X1, X2, Z, zorder=0, alpha=0.1)
     ax.contour(X1, X2, Z, colors='g')
 
-# def normalize_matrices(df):
-#     x = np.array(df.iloc[:, 0].values).reshape(-1, 1)
-#     Y = np.array(df.iloc[:, 1].values).reshape(-1, 1)
-#     nx = np.zeros(len(x), dtype=float).reshape(-1, 1)
-
-#     xmin = np.min(x)
-#     xmax = np.max(x)
-#     for i in range(len(x)):
-#         nx[i] = (x[i] - xmin) / (xmax - xmin)
-#     X = np.hstack((nx, np.ones(nx.shape)))
-
-#     return x, Y, X
-
-# def train_model(X, Y):
-#     learning_rate = 0.5
-#     n_iterations = 300
-
-#     theta = np.random.randn(2, 1)
-#     theta_final, cost_history = gradient_descent(X, Y, theta, learning_rate, n_iterations)
-#     thetas = {
-#         'Theta0': theta_final[0, 0].item(),
-#         'Theta1': theta_final[1, 0].item()
-#     }
-#     with open('thetas.json', 'w') as file:
-#         json.dump(thetas, file)
-
-#     predictions = model(X, theta_final)
-#     coef = coef_determination(Y, predictions)
-
-#     return coef, predictions, cost_history
 
 def main():
     parser = argparse.ArgumentParser(description="Process a CSV file.")
     parser.add_argument('path', type=str, help='Path to the CSV file')
     args = parser.parse_args()
 
-    features = ["Hogwarts House", "Ancient Runes", "Astronomy", 
-                "Herbology", "Charms", "Defense Against the Dark Arts"]
+    features = ["Ancient Runes", "Astronomy", "Herbology", "Charms", "Defense Against the Dark Arts"]
     try:
         df = load(args.path)
         if df is None:
             return
-        features_col = df[features]
+        # features_col = df[features]
         # features_col.drop('Index', axis=1, inplace=True)
 
-        X = np.array(features_col.iloc[:, 1:].values)
-        Y = np.array(features_col.iloc[:, 0].values).reshape(-1, 1)
+        # X = np.array(features_col.iloc[:, 1:].values)
+        # y = np.array(features_col.iloc[:, 0].values).reshape(-1, 1)
+        X = df[features].values
+        lb = LabelBinarizer()
+        y = lb.fit_transform(df['Hogwarts House'])
         print(X)
-        print(Y)
+        print(y)
         print(X.shape)
-        print(Y.shape)
-        # Initialisation
+        print(y.shape)
+        # init du weight et du biais avec des val random
         W, b = initialisation(X)
         loss_history = []
+        n_iter = 100
+        learning_rate = 0.1
+        models = []
 
-        # # Entrainement
-        # for i in range(n_iter):
-        #     A = forward_propagation(X, W, b)
-        #     loss_history.append(log_loss(y, A))
-        #     W, b = optimisation(X, W, b, A, y, learning_rate=0.1)
+        # model training
+        for i in range(y.shape[1]):
+            W, b, loss_history = train(X, y[:, i].reshape(-1, 1), n_iter, learning_rate)
+            models.append((W, b, loss_history))
+        
+        # prediction
+        predictions = np.zeros((X.shape[0], len(models)))
+        for i, (W, b, _) in enumerate(models):
+            predictions[:, i] = predict(X, W, b).flatten()
 
-        # # Prediction
+        final_predictions = lb.inverse_transform(predictions)
+
+        print("Prédictions finales :", final_predictions)
+
+
         # visualisation(X, y, W, b)
         # plt.figure(figsize=(9, 6))
         # plt.plot(loss_history)
         # plt.xlabel('n_iteration')
         # plt.ylabel('Log_loss')
         # plt.title('Evolution des erreurs')
+        # plt.show()
 
 
      
@@ -115,6 +108,8 @@ def main():
         return
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(type(e).__name__ + ":", e)
         return
 
