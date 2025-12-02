@@ -1,9 +1,13 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils.load_csv import load
 import matplotlib.pyplot as plt
 from pandas.api.types import is_numeric_dtype
 import numpy as np
 from matplotlib.patches import Patch
 import argparse
+
 
 def get_numeric_col(df):
     numeric =[]

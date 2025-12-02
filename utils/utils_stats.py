@@ -1,88 +1,88 @@
 class calculate:
 
     @staticmethod
-    def count(list):
+    def my_count(lst):
         """
         counts the number of items in the list.
         """
-        if len(list) == 0:
+        if len(lst) == 0:
             return None
-        return len(list)
+        return len(lst)
 
     @staticmethod
-    def mean(list):
+    def my_mean(lst):
         """
         calculates the mean of a list of numbers.
         """
-        if len(list) == 0:
+        if len(lst) == 0:
             return None
-        return sum(list) / len(list)
+        return sum(lst) / len(lst)
 
     @staticmethod
-    def median(list):
+    def my_median(lst):
         """
         calculates the median of a list of numbers.
         """
-        if len(list) == 0:
+        if len(lst) == 0:
             return None
-        list.sort()
-        length = len(list)
+        lst.sort()
+        length = len(lst)
         if length % 2 == 0:
-            return (list[int(length/2) - 1] + list[int(length/2)]) / 2
+            return (lst[int(length/2) - 1] + lst[int(length/2)]) / 2
         else:
-            return list[int(length/2)]
+            return lst[int(length/2)]
 
     @staticmethod
-    def quart(list):
+    def my_quart(lst):
         """
         calculates the quartile (25% and 75%) of a list of numbers.
         """
-        if len(list) == 0:
+        if len(lst) == 0:
             return None
-        list.sort()
-        length = len(list)
+        lst.sort()
+        length = len(lst)
         half = int(length / 2)
 
         if length % 2 == 0:
-            Q1 = calculate.median(list[:half - 1])
-            Q3 = calculate.median(list[half:])
+            Q1 = calculate.my_median(lst[:half - 1])
+            Q3 = calculate.my_median(lst[half:])
         else:
-            Q1 = calculate.median(list[:half + 1])
-            Q3 = calculate.median(list[half:])
+            Q1 = calculate.my_median(lst[:half + 1])
+            Q3 = calculate.my_median(lst[half:])
 
         return [float(Q1), float(Q3)]
 
     @staticmethod
-    def var(list):
+    def my_var(lst):
         """
         calculates the Standard Deviation of a list of numbers.
         """
         # variance = moyenne des carrés des différences entre chaque élément
         # et la moyenne.
         # écart-type = la racine carrée de la variance.
-        if len(list) == 0:
+        if len(lst) == 0:
             return None
-        mean = calculate.mean(list)
-        var = sum((x - mean) ** 2 for x in list) / len(list)
+        mean = calculate.my_mean(lst)
+        var = sum((x - mean) ** 2 for x in lst) / len(lst)
         return var
 
     @staticmethod
-    def std(list):
+    def my_std(lst):
         """
         calculates the Standard Deviation of a list of numbers.
         """
         # variance = moyenne des carrés des différences entre chaque élément
         # et la moyenne.
         # écart-type = la racine carrée de la variance.
-        if len(list) == 0:
+        if len(lst) == 0:
             return None
-        mean = calculate.mean(list)
-        var = sum((x - mean) ** 2 for x in list) / len(list)
+        mean = calculate.my_mean(lst)
+        var = sum((x - mean) ** 2 for x in lst) / len(lst)
         std = var ** 0.5
         return std
     
     @staticmethod
-    def min(lst):
+    def my_min(lst):
         if len(lst) == 0:
             return None
         min_value = lst[0]
@@ -92,7 +92,7 @@ class calculate:
         return min_value
     
     @staticmethod
-    def max(lst):
+    def my_max(lst):
         if len(lst) == 0:
             return None
         max_value = lst[0]

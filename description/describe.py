@@ -1,3 +1,6 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,9 +13,9 @@ import argparse
 def update_feature(df, column):
     info = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]
     data = column.dropna().tolist()
-    calculation = [calculate.count(data), calculate.mean(data), calculate.std(data),
-                calculate.min(data), calculate.quart(data)[0], calculate.median(data),
-                calculate.quart(data)[1], calculate.max(data)]
+    calculation = [calculate.my_count(data), calculate.my_mean(data), calculate.my_std(data),
+                calculate.my_min(data), calculate.my_quart(data)[0], calculate.my_median(data),
+                calculate.my_quart(data)[1], calculate.my_max(data)]
 
     for i in range(len(info)):
         df.at[info[i], column.name] = calculation[i]
